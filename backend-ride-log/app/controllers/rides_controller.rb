@@ -16,6 +16,8 @@ class RidesController < ApplicationController
         ride = Ride.find(params[:id])
         ride.destroy
 
+        render json: ride
+
     end
 
 private

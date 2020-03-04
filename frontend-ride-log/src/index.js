@@ -4,19 +4,20 @@ const rideDetail = document.querySelector("#ride-detail")
 const rideForm = document.querySelector('#new-ride') 
 
 
-//---------------------Initial Fetch-----------------------------------
+//------------------------Initial Fetch-----------------------------------
 
 fetch("http://localhost:3000/users/1")
 .then(response => response.json())
 .then(data => data.rides.forEach(renderRides))
 
-//--------------------Display List------------------------------------
+//-----------------------Display List------------------------------------
 
 function renderRides(ride){ 
     let rideLi = document.createElement("li")
     rideLi.className = "ride-li"
     rideLi.dataset.id = ride.id
     rideLi.innerText = ride.name
+
     ridesList.append(rideLi)
 
     rideLi.addEventListener("click", (event) => {
@@ -27,7 +28,7 @@ function renderRides(ride){
 
 //----------------------Helper Function-----------------------------
 
-function gatherFormData(){
+function gatherFormData(event){
   return {
     name: event.target.name.value,
       image_url: event.target.image_url.value,
@@ -51,7 +52,7 @@ rideForm.addEventListener('submit', (event) => {
     alert("Entry invalid")  
   } 
   else {
-    let newRide = gatherFormData();
+    let newRide = gatherFormData(event);
    return fetch('http://localhost:3000/rides', {
     method: "POST",
     headers: {
@@ -88,23 +89,26 @@ function renderDetail(ride){
   
   destroy.innerText = "Delete"
 
-  rideDetail.append(title, distance, time, rating, img, destroy ) //destroy) 
+  rideDetail.append(title, distance, time, rating, img, destroy) 
 
   
   //------------------Delete Ride---------------------------------------
 
   destroy.addEventListener('click', (event) => {
-    
-   
     event.preventDefault()
     
 
     fetch(`http://localhost:3000/rides/${ride.id}`, {
     method: "DELETE"
     })
-   
+    
+    const dele = document.querySelector(`.ride-li[data-id='${ride.id}']`)
+
+    dele.remove()
+
     rideDetail.innerHTML = "Ride Deleted"
 
+  
   })
 
 }
