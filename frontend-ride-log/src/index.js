@@ -8,7 +8,7 @@ const rideForm = document.querySelector('#new-ride')
 
 fetch("http://localhost:3000/users/1")
 .then(response => response.json())
-.then(data => data.rides.forEach(renderRides))
+.then(userObj => userObj.rides.forEach(renderRides))
 
 //-----------------------Display List------------------------------------
 
@@ -53,7 +53,7 @@ rideForm.addEventListener('submit', (event) => {
   } 
   else {
     let newRide = gatherFormData(event);
-   return fetch('http://localhost:3000/rides', {
+    return fetch('http://localhost:3000/rides', {
     method: "POST",
     headers: {
       'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ rideForm.addEventListener('submit', (event) => {
   .then(res => res.json())
   .then(ride => renderRides(ride))
   }
-  rideForm.reset()
+ rideForm.reset()
 }) 
 
 //----------------------Ride Detail------------------------------------
@@ -102,14 +102,23 @@ function renderDetail(ride){
     method: "DELETE"
     })
     
-    const dele = document.querySelector(`.ride-li[data-id='${ride.id}']`)
+    const deley = document.querySelector(`.ride-li[data-id='${ride.id}']`)
 
-    dele.remove()
+    deley.remove()
 
     rideDetail.innerHTML = "Ride Deleted"
 
   
   })
 
-}
+  //--------------------Update Ride-------------------------------------
+
+                //tobeadded
+                //Have to create a form/ update the controller 
+                //need to create button,
+                //DOM and event listener and fetch "PATCH"(what makes it an update) on submit to button 
+
+
+
+}//---------------- End of Ride Detail ----------------------------------
 
