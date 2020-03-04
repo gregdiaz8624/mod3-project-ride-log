@@ -71,3 +71,6 @@ footer {
 .image{width: 300px;
       height: 200px; }
 
+.deleteButton{
+  display: block
+}
