@@ -3,41 +3,14 @@ const ridesList = document.querySelector("#ride-list")
 const rideDetail = document.querySelector("#ride-detail")
 const rideForm = document.querySelector('#new-ride') 
 
-rideForm.addEventListener('submit', (event) => {   
-  event.preventDefault()
-  
-  if (event.target.name.value === "" ||
-      event.target.distance.value === "" ||
-      event.target.image_url.value === "" ||
-      event.target.rating.value === ""||
-      event.target.time.value === "")
-  {
-    alert("Entry invalid")  
-  } 
-  else {
-    fetch('http://localhost:3000/rides', {
-    method: "POST",
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    },
-    body: JSON.stringify({
-      name: event.target.name.value,
-      image_url: event.target.image_url.value,
-      distance: event.target.distance.value,
-      rating: event.target.rating.value,
-      time: event.target.time.value,
-      user_id: 1
-    })
-  })
-  .then(res => res.json())
-  .then(ride => renderRides(ride))
-  }
-}) 
+
+//---------------------Initial Fetch-----------------------------------
 
 fetch("http://localhost:3000/users/1")
 .then(response => response.json())
 .then(data => data.rides.forEach(renderRides))
+
+//--------------------Display List------------------------------------
 
 function renderRides(ride){ 
     let rideLi = document.createElement("li")
@@ -51,6 +24,49 @@ function renderRides(ride){
         renderDetail(ride)
     })
 }
+
+//----------------------Helper Function-----------------------------
+
+function gatherFormData(){
+  return {
+    name: event.target.name.value,
+      image_url: event.target.image_url.value,
+      distance: event.target.distance.value,
+      rating: event.target.rating.value,
+      time: event.target.time.value,
+      user_id: 1
+  }
+}
+
+//----------------------Create New Ride-------------------------------
+rideForm.addEventListener('submit', (event) => {   
+  event.preventDefault()
+  
+  if (event.target.name.value === "" ||
+      event.target.distance.value === "" ||
+      event.target.image_url.value === "" ||
+      event.target.rating.value === ""||
+      event.target.time.value === "")
+  {
+    alert("Entry invalid")  
+  } 
+  else {
+    let newRide = gatherFormData();
+   return fetch('http://localhost:3000/rides', {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify(newRide)
+  })
+  .then(res => res.json())
+  .then(ride => renderRides(ride))
+  }
+  rideForm.reset()
+}) 
+
+//----------------------Ride Detail------------------------------------
 
 function renderDetail(ride){
     
@@ -72,9 +88,14 @@ function renderDetail(ride){
   
   destroy.innerText = "Delete"
 
-  rideDetail.append(title, distance, time, rating, img , destroy)
+  rideDetail.append(title, distance, time, rating, img, destroy ) //destroy) 
+
+  
+  //------------------Delete Ride---------------------------------------
 
   destroy.addEventListener('click', (event) => {
+    
+   
     event.preventDefault()
     
 
@@ -85,13 +106,6 @@ function renderDetail(ride){
     rideDetail.innerHTML = "Ride Deleted"
 
   })
- // destroy.closest(".ride-li")
-// const destroyBikeLi = ridesList.querySelectorAll.filter(rideLi => rideLi.dataset.id === ride.id)
-    // console.log(destroyBikeLi)
-    // console.log(ride.id)
-    // // if (event.target.dataset.id == ridesList.querySelector("data-id")){
-    // //   rideLi.remove()
-    // // }
 
 }
 
