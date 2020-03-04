@@ -11,6 +11,8 @@ class RidesController < ApplicationController
         
     end
 
+    
+
 
     def destroy
         ride = Ride.find(params[:id])

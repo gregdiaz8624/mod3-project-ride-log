@@ -8,11 +8,11 @@ const rideForm = document.querySelector('#new-ride')
 
 fetch("http://localhost:3000/users/1")
 .then(response => response.json())
-.then(userObj => userObj.rides.forEach(renderRides))
+.then(userObj => userObj.rides.forEach(renderRide))
 
 //-----------------------Display List------------------------------------
 
-function renderRides(ride){ 
+function renderRide(ride){ 
     let rideLi = document.createElement("li")
     rideLi.className = "ride-li"
     rideLi.dataset.id = ride.id
@@ -53,7 +53,7 @@ rideForm.addEventListener('submit', (event) => {
   } 
   else {
     let newRide = gatherFormData(event);
-    return fetch('http://localhost:3000/rides', {
+    fetch('http://localhost:3000/rides', {
     method: "POST",
     headers: {
       'Content-Type': 'application/json',
@@ -62,7 +62,11 @@ rideForm.addEventListener('submit', (event) => {
     body: JSON.stringify(newRide)
   })
   .then(res => res.json())
-  .then(ride => renderRides(ride))
+  .then(ride => {
+    renderRide(ride)
+    renderDetail(ride)
+  })
+    
   }
  rideForm.reset()
 }) 
@@ -90,6 +94,7 @@ function renderDetail(ride){
   destroy.innerText = "Delete"
 
   rideDetail.append(title, distance, time, rating, img, destroy) 
+  console.log(ride)
 
   
   //------------------Delete Ride---------------------------------------
@@ -97,25 +102,26 @@ function renderDetail(ride){
   destroy.addEventListener('click', (event) => {
     event.preventDefault()
     
+    const deletey = document.querySelector(`.ride-li[data-id='${ride.id}']`)
 
     fetch(`http://localhost:3000/rides/${ride.id}`, {
     method: "DELETE"
     })
-    
-    const deley = document.querySelector(`.ride-li[data-id='${ride.id}']`)
-
-    deley.remove()
-
-    rideDetail.innerHTML = "Ride Deleted"
-
+    .then(response => response.json())
+    .then(() => {
+    deletey.remove()
+    rideDetail.innerHTML = ""
+    })
   
   })
 
   //--------------------Update Ride-------------------------------------
 
-                //tobeadded
+                //to be added
                 //Have to create a form/ update the controller 
                 //need to create button,
+
+                //make patch /ride/${id}
                 //DOM and event listener and fetch "PATCH"(what makes it an update) on submit to button 
 
 
