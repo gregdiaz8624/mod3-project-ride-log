@@ -28,7 +28,7 @@ function renderRide(ride){
 
 //----------------------Helper Function-----------------------------
 
-function gatherFormData(event){
+function gatherFormData(event){   //
   return {
     name: event.target.name.value,
       image_url: event.target.image_url.value,
@@ -60,7 +60,7 @@ rideForm.addEventListener('submit', (event) => {
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     },
-    body: JSON.stringify(newRide)
+    body: JSON.stringify(newRide) // takes an object, that object being the gathered form data 
   })
   .then(res => res.json())
   .then(ride => {
@@ -84,6 +84,15 @@ function renderDetail(ride){
   let img = document.createElement("img")
   let destroy = document.createElement("button")
 
+  let updateForm = document.createElement("form")
+  let updateInput = document.createElement("input")
+  updateInput.className = "input-style"
+  updateInput.type = "text"
+  updateInput.name = "time"
+  let submitInput = document.createElement("input")
+  submitInput.className = "submit"
+  submitInput.type = "submit"
+
   title.innerText = ride.name 
   distance.innerText = "Total Distance: "+ ride.distance + " miles"
   time.innerText = "Personal Best Time: "+ ride.time
@@ -95,7 +104,9 @@ function renderDetail(ride){
   
   destroy.innerText = "Delete"
 
-  rideDetail.append(title, distance, time, rating, img, destroy) 
+
+  updateForm.append(updateInput, submitInput)
+  rideDetail.append(title, distance, time, rating, img, destroy, updateForm) 
   // console.log(ride)
 
   
@@ -119,13 +130,7 @@ function renderDetail(ride){
 
   //--------------------Update Ride-------------------------------------
 
-                //to be added
-                //Have to create a form/ update the controller 
-                //need to create button,
-
-                //make patch /ride/${id}
-                //DOM and event listener and fetch "PATCH"(what makes it an update) on submit to button 
-
+  // updateForm.addEventListener("")
 
 
 }//---------------- End of Ride Detail ----------------------------------

@@ -11,7 +11,12 @@ class RidesController < ApplicationController
         
     end
 
-    
+    def update
+        ride = Ride.find(params[:id])
+        ride.update(params[:time])
+
+        render json: ride
+     end 
 
 
     def destroy
