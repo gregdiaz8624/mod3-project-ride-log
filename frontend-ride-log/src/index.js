@@ -41,7 +41,8 @@ function gatherFormData(event){
 
 //----------------------Create New Ride-------------------------------
 rideForm.addEventListener('submit', (event) => {   
-  event.preventDefault()
+  
+  event.preventDefault()  
   
   if (event.target.name.value === "" ||
       event.target.distance.value === "" ||
@@ -64,6 +65,7 @@ rideForm.addEventListener('submit', (event) => {
   .then(res => res.json())
   .then(ride => {
     renderRide(ride)
+    rideDetail.innerHTML = ""
     renderDetail(ride)
   })
     
@@ -94,7 +96,7 @@ function renderDetail(ride){
   destroy.innerText = "Delete"
 
   rideDetail.append(title, distance, time, rating, img, destroy) 
-  console.log(ride)
+  // console.log(ride)
 
   
   //------------------Delete Ride---------------------------------------
@@ -110,7 +112,7 @@ function renderDetail(ride){
     .then(response => response.json())
     .then(() => {
     deletey.remove()
-    rideDetail.innerHTML = ""
+    rideDetail.innerHTML = "Ride Deleted"
     })
   
   })
