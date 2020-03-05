@@ -4,6 +4,11 @@ class RidesController < ApplicationController
         render json: rides
     end
 
+    def show
+        ride = Ride.find(params[:id])
+        render json: ride
+    end
+
  
     def create
         ride = Ride.create(ride_params)
@@ -13,7 +18,7 @@ class RidesController < ApplicationController
 
     def update
         ride = Ride.find(params[:id])
-        ride.update(params[:time])
+        ride.update(params.permit(:time))
 
         render json: ride
      end 
@@ -27,11 +32,12 @@ class RidesController < ApplicationController
 
     end
 
-private
+    private
 
-def ride_params
-    params.require(:ride).permit(:name, :rating, :distance, :time, :image_url, :user_id)
-end
+    def ride_params
+        params.require(:ride).permit(:name, :rating, :distance, :time, :image_url, :user_id)
+    end
+
 
 
 end

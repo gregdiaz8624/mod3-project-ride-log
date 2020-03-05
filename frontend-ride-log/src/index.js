@@ -92,7 +92,8 @@ function renderDetail(ride){
   let submitInput = document.createElement("input")
   submitInput.className = "submit"
   submitInput.type = "submit"
-
+  let uLabel = document.createElement("p")
+  uLabel.innerText = "Update Time"
   title.innerText = ride.name 
   distance.innerText = "Total Distance: "+ ride.distance + " miles"
   time.innerText = "Personal Best Time: "+ ride.time
@@ -106,7 +107,7 @@ function renderDetail(ride){
 
 
   updateForm.append(updateInput, submitInput)
-  rideDetail.append(title, distance, time, rating, img, destroy, updateForm) 
+  rideDetail.append(title, distance, time, rating, img, destroy, uLabel, updateForm) 
   // console.log(ride)
 
   
@@ -130,7 +131,26 @@ function renderDetail(ride){
 
   //--------------------Update Ride-------------------------------------
 
-  // updateForm.addEventListener("")
+  updateForm.addEventListener("submit", (e) => {
+    event.preventDefault()
+
+    fetch(`http://localhost:3000/rides/${ride.id}`, {
+    method: "PATCH",
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify({
+      time: e.target.time.value}
+    )
+
+    })
+    .then(response => response.json())
+    .then((data) => time.innerText = "Personal Best Time: "+ data.time )
+
+    updateForm.reset()
+
+  } )
 
 
 }//---------------- End of Ride Detail ----------------------------------
